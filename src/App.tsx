@@ -29,7 +29,7 @@ function App() {
   const [content, setContent] = useState("");
   const [selectedStyle, setSelectedStyle] = useState<DiaryStyle>("essay");
   const [instruction, setInstruction] = useState("");
-  
+
   // APIキーの読み込み（LocalStorage 優先、なければ Vite 環境変数）
   const [apiKey, setApiKey] = useState<string>(() => {
     return (
@@ -38,7 +38,7 @@ function App() {
       ""
     );
   });
-  
+
   const [tempApiKey, setTempApiKey] = useState(apiKey); // 設定モーダル用の一時入力キー
   const [isTailoring, setIsTailoring] = useState(false);
   const [tailoredTitle, setTailoredTitle] = useState("");
@@ -175,13 +175,13 @@ function App() {
 
       {/* メインレイアウト */}
       <main className="app-layout">
-        
+
         {/* 左側: 採寸 (インプット) */}
         <section className="glass-panel stitch-border input-panel">
-          
+
           <div className="input-section">
             <h2 className="panel-title">1. 日記の採寸 (入力)</h2>
-            
+
             <div className="form-group">
               <label htmlFor="diary-title" className="form-label-sub">
                 タイトル (必須または省略可)
@@ -219,9 +219,8 @@ function App() {
                 (style) => (
                   <div
                     key={style}
-                    className={`style-option ${
-                      selectedStyle === style ? "selected" : ""
-                    }`}
+                    className={`style-option ${selectedStyle === style ? "selected" : ""
+                      }`}
                     onClick={() => !isTailoring && setSelectedStyle(style)}
                   >
                     <div className="style-icon-wrapper">
@@ -299,7 +298,7 @@ function App() {
                 </div>
               </div>
               <div className="editor-container" style={{ display: "flex", flexDirection: "column", gap: "20px", flexGrow: 1 }}>
-                
+
                 {/* 仕立てられたタイトル */}
                 <div className="form-group" style={{ flexShrink: 0 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
@@ -385,13 +384,13 @@ function App() {
                 <X size={20} />
               </button>
             </div>
-            
+
             <div className="modal-body">
               <p className="help-text">
                 本アプリは、ブラウザから直接 Google Gemini API を安全に呼び出します。
                 APIキーはあなたのブラウザのローカルストレージにのみ保存され、外部サーバーへ送信されることはありません。
               </p>
-              
+
               <div className="form-group">
                 <label className="form-label" htmlFor="api-key-input">
                   Gemini API キー
@@ -400,7 +399,7 @@ function App() {
                   id="api-key-input"
                   type="password"
                   className="input-field"
-                  placeholder="AIzaSy..."
+                  placeholder="AQ.Ab..."
                   value={tempApiKey}
                   onChange={(e) => setTempApiKey(e.target.value)}
                 />
