@@ -162,8 +162,8 @@
 }
 
 .textarea-field {
-  resize: vertical;
-  min-height: 40px;
+  resize: none;
+  min-height: 50px;
   line-height: 1.5;
 }
 
