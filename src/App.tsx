@@ -15,7 +15,7 @@ import {
   Info
 } from "lucide-react";
 import "./App.css";
-import { tailorDiary, type DiaryStyle, STYLE_LABELS } from "./services/gemini";
+import { tailorDiary, type DiaryStyle, STYLE_LABELS, DIARY_STYLES } from "./services/gemini";
 
 interface Toast {
   id: string;
@@ -215,7 +215,7 @@ function App() {
           <div className="input-section">
             <h2 className="panel-title">2. 仕立てスタイルの選択</h2>
             <div className="style-selector">
-              {(["essay", "novel", "bullet", "blog", "viral"] as DiaryStyle[]).map(
+              {DIARY_STYLES.map(
                 (style) => (
                   <div
                     key={style}
