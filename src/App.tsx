@@ -243,7 +243,7 @@ function App() {
                 value={instruction}
                 onChange={(e) => setInstruction(e.target.value)}
                 disabled={isTailoring}
-                style={{ minHeight: "40px", resize: "none", overflow: "hidden" }}
+                style={{ minHeight: "40px", resize: "none" }}
               />
             </div>
           </div>
