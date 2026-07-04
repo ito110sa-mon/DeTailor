@@ -30,7 +30,7 @@ const STYLE_PROMPTS: Record<DiaryStyle, string> = {
   - 【明日に向けて】: ポジティブな一言や次のアクション
 - 冗長な表現を避け、すっきりと整理されたレイアウトにしてください。`,
 
-  blog: `他者に伝えることを意識した、構成の整った「ブログ風」の記事として仕立ててください。
+  blog: `他者が伝えることを意識した、構成の整った「ブログ風」の記事として仕立ててください。
 - キャッチーな見出し（Markdownの「##」など）を2〜3個使用して、論理的に構成してください。
 - 「導入（フックとなるエピソード）」「本編（体験したことや感じたことの詳細）」「まとめ・読者へのメッセージや問いかけ」という流れを意識してください。
 - 親しみやすくも丁寧な（〜です、〜ます）敬体で書いてください。`,
@@ -46,10 +46,7 @@ export interface TailoredDiary {
   content: string;
 }
 
-/**
- * Gemini APIを使用して日記を仕立てるコアロジック（クライアント・サーバー両方から使用）
- */
-export async function generateTailoredDiaryCore(params: {
+export async function tailorDiary(params: {
   title: string;
   content: string;
   style: DiaryStyle;
@@ -58,8 +55,43 @@ export async function generateTailoredDiaryCore(params: {
 }): Promise<TailoredDiary> {
   const { title, content, style, apiKey, instruction } = params;
 
+  if (!title.trim() && !content.trim()) {
+    throw new Error("タイトルと本文が両方とも未入力です。少なくともどちらか一方を入力してください。");
+  }
+
+  // APIキーが設定されていない場合は、バックエンド（/api/tailor）を呼び出す
+  if (!apiKey) {
+    try {
+      const response = await fetch("/api/tailor", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          content,
+          style,
+          instruction,
+        }),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || `HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return {
+        title: data.title,
+        content: data.content,
+      };
+    } catch (error: any) {
+      console.error("Backend API Error:", error);
+      throw new Error(error.message || "サーバー経由での日記の仕立て中にエラーが発生しました。");
+    }
+  }
+
   const genAI = new GoogleGenerativeAI(apiKey);
-  // gemini-3.5-flashを使用
   const model = genAI.getGenerativeModel(
     { model: "gemini-3.5-flash" },
     { apiVersion: "v1" }
@@ -177,57 +209,4 @@ ${instruction.trim()}
     console.error("Gemini API Error:", error);
     throw new Error(error.message || "日記の仕立て中にエラーが発生しました。APIキーまたは接続を確認してください。");
   }
-}
-
-/**
- * フロントエンドから呼び出すメインエントリーポイント
- * APIキーがない場合はVercelのServerless Functionを呼び出します。
- */
-export async function tailorDiary(params: {
-  title: string;
-  content: string;
-  style: DiaryStyle;
-  apiKey: string;
-  instruction?: string;
-}): Promise<TailoredDiary> {
-  const { title, content, style, apiKey, instruction } = params;
-
-  if (!title.trim() && !content.trim()) {
-    throw new Error("タイトルと本文が両方とも未入力です。少なくともどちらか一方を入力してください。");
-  }
-
-  // APIキーが設定されていない場合は、バックエンド（/api/tailor）を呼び出す
-  if (!apiKey) {
-    try {
-      const response = await fetch("/api/tailor", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          content,
-          style,
-          instruction,
-        }),
-      });
-
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.error || `HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return {
-        title: data.title,
-        content: data.content,
-      };
-    } catch (error: any) {
-      console.error("Backend API Error:", error);
-      throw new Error(error.message || "サーバー経由での日記の仕立て中にエラーが発生しました。");
-    }
-  }
-
-  // APIキーがある場合は直接Gemini APIを叩く
-  return generateTailoredDiaryCore(params);
 }
