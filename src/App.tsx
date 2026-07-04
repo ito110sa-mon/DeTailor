@@ -186,10 +186,9 @@ function App() {
               <label htmlFor="diary-title" className="form-label-sub">
                 タイトル (必須または省略可)
               </label>
-              <input
+              <textarea
                 id="diary-title"
-                type="text"
-                className="input-field"
+                className="input-field textarea-field"
                 placeholder="今日を一言で表すと？ (例: 運命のランチ、雨の日曜日)"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -315,14 +314,17 @@ function App() {
                       <span>コピー</span>
                     </button>
                   </div>
-                  <input
+                  <textarea
                     id="tailored-title"
-                    type="text"
-                    className="input-field"
+                    className="input-field textarea-field"
                     value={tailoredTitle}
                     onChange={(e) => setTailoredTitle(e.target.value)}
                     placeholder="仕立てられたタイトル..."
-                    style={{ fontSize: "1.1rem", fontWeight: "600", fontFamily: "var(--font-serif)" }}
+                    style={{
+                      fontSize: "1.1rem",
+                      fontWeight: "600",
+                      fontFamily: "var(--font-serif)",
+                    }}
                   />
                 </div>
 
