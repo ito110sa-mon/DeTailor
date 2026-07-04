@@ -163,8 +163,12 @@
 
 .textarea-field {
   resize: none;
-  min-height: 50px;
+  min-height: 20px;
   line-height: 1.5;
+}
+
+#diary-notes {
+  min-height: 60px;
 }
 
 /* スタイルセレクタ（生地サンプル風） */
@@ -449,10 +453,4 @@
     transform: translateX(0);
     opacity: 1;
   }
-}
-
-/* タイトル入力・出力欄の最小高さを上書き */
-#diary-title,
-#tailored-title {
-  min-height: 20px;
 }

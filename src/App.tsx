@@ -193,6 +193,7 @@ function App() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 disabled={isTailoring}
+                rows={1}
               />
             </div>
 
@@ -320,6 +321,7 @@ function App() {
                     value={tailoredTitle}
                     onChange={(e) => setTailoredTitle(e.target.value)}
                     placeholder="仕立てられたタイトル..."
+                    rows={1}
                     style={{
                       fontSize: "1.1rem",
                       fontWeight: "600",
