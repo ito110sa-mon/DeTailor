@@ -193,7 +193,6 @@ function App() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 disabled={isTailoring}
-                style={{ minHeight: "20px", resize: "none" }}
               />
             </div>
 
@@ -325,8 +324,6 @@ function App() {
                       fontSize: "1.1rem",
                       fontWeight: "600",
                       fontFamily: "var(--font-serif)",
-                      minHeight: "20px",
-                      resize: "none"
                     }}
                   />
                 </div>

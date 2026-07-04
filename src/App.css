@@ -450,3 +450,9 @@
     opacity: 1;
   }
 }
+
+/* タイトル入力・出力欄の最小高さを上書き */
+#diary-title,
+#tailored-title {
+  min-height: 20px;
+}
